@@ -87,8 +87,35 @@ Template.buy.helpers({
     address: function () {
         return Userdata.findOne({ coin: Session.get("currentcoin") }) && Userdata.findOne({ coin: Session.get("currentcoin") }).smartaddress.toString();
     },
+    selectedCoinKMD: function () {
+        console.log('The session coin is kmd', Session);
+        if (Session.get("currentcoin") == "KMD") {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    selectedCoinLTC: function () {
+        if (Session.get("currentcoin") == "LTC") {
+            console.log('The session coin is ltc');
+            return true;
+        } else {
+            return false;
+        }
+    },
+    selectedCoinBTC: function () {
+        if (Session.get("currentcoin") == "BTC") {
+            console.log('The session coin is btc');
+            return true;
+        } else {
+            return false;
+        }
+    },
+
     activecoinKMD: function () {
+        console.log('The session coin is kmd', Session.get("coin"));
         if (Session.get("coin") == "KMD") {
+            console.log('The session coin is kmd');
             return true;
         } else {
             return false;
@@ -96,6 +123,15 @@ Template.buy.helpers({
     },
     activecoindICOT: function () {
         if (Session.get("coin") == tokenconfig.dICOtoken.coin) {
+            console.log('The session coin is glxt');
+            return true;
+        } else {
+            return false;
+        }
+    },
+    activecoinLTC: function () {
+        if (Session.get("coin") == "LTC") {
+            console.log('The session coin is ltc');
             return true;
         } else {
             return false;
@@ -103,6 +139,7 @@ Template.buy.helpers({
     },
     activecoinBTC: function () {
         if (Session.get("coin") == "BTC") {
+            console.log('The session coin is btc');
             return true;
         } else {
             return false;

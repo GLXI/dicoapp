@@ -1,10 +1,22 @@
 <template name="buy">
   <div class="col-sm-9 col-lg-10">
     <div class="wallet buy">
-      <h2>Buy {{ dICOTName }}</h2>
+      <h2>Buy {{ dICOTName }} with</h2>
 
 
-      {{#unless ready}}<span><p>Syncing orderbook {{ > sloader }}</p></span> {{/unless}}
+      {{#unless ready}}<span><p>Syncing orderbook (may take a few minutes) {{ > sloader }}</p></span> {{/unless}}
+
+      <div class="panel-group selected-coin">
+          <div class="select-coin-btn btc {{#if activecoinBTC }}selected{{/if}}">
+              <div>Bitcoin</div>
+          </div>
+          <div class="select-coin-btn ltc {{#if activecoinLTC }}selected{{/if}}">
+              <div>Litecoin</div>
+          </div>
+          <div class="select-coin-btn kmd {{#if activecoinKMD }}selected{{/if}}">
+              <div>Komodo</div>
+          </div>
+      </div>
 
       <div class="input-group buy">
 

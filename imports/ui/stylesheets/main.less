@@ -379,3 +379,27 @@ input::-webkit-inner-spin-button {
 .amountusd-container {
   padding-bottom: 50px;
 }
+
+.selected-coin{
+  display: flex;
+
+  .select-coin-btn{
+    padding: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 1px solid lightgray;
+    cursor: hand;
+    cursor: pointer;
+    border-radius: 5px;
+
+    &:hover{
+      background: lightgreen;
+    }
+
+    &.selected{
+      border: 1px solid lightgreen;
+    }
+  }
+
+}
+
