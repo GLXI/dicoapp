@@ -15,7 +15,6 @@ const numcoin = 100000000;
 let amount = 500;
 
 Template.buy.onCreated(function () {
-    console.log("rendered");
     function init() {
         try {
             Session.set("pricekmd", Tradedata.findOne({ key: "priceKMD" }).price / numcoin);
@@ -64,10 +63,13 @@ Template.buy.helpers({
         //return Session.get("activeAddressButton");
     },
     coins: function () {
-        return ["KMD", "BTC"];
+        return ["KMD", "BTC", "LTC"];
     },
     currentcoin: function () {
         return Session.get("currentcoin");
+    },
+    setCurrentCoin: function(coin){
+        Session.set("currentcoin", coin);
     },
     balance: function () {
         return Userdata.findOne({ coin: Session.get("coin") }) && parseFloat(Userdata.findOne({ coin: Session.get("coin") }).balance / numcoin).toFixed(8);
@@ -77,6 +79,9 @@ Template.buy.helpers({
     },
     balancedICOT: function () {
         return Userdata.findOne({ coin: tokenconfig.dICOtoken.coin }) && parseFloat(Userdata.findOne({ coin: tokenconfig.dICOtoken.coin }).balance / numcoin).toFixed(8);
+    },
+    balanceLTC: function () {
+        return Userdata.findOne({ coin: "LTC" }) && parseFloat(Userdata.findOne({ coin: "LTC" }).balance / numcoin).toFixed(8);
     },
     dICOTName: function () {
         return tokenconfig.dICOtoken.coin;
@@ -88,7 +93,6 @@ Template.buy.helpers({
         return Userdata.findOne({ coin: Session.get("currentcoin") }) && Userdata.findOne({ coin: Session.get("currentcoin") }).smartaddress.toString();
     },
     selectedCoinKMD: function () {
-        console.log('The session coin is kmd', Session);
         if (Session.get("currentcoin") == "KMD") {
             return true;
         } else {
@@ -97,7 +101,6 @@ Template.buy.helpers({
     },
     selectedCoinLTC: function () {
         if (Session.get("currentcoin") == "LTC") {
-            console.log('The session coin is ltc');
             return true;
         } else {
             return false;
@@ -105,7 +108,6 @@ Template.buy.helpers({
     },
     selectedCoinBTC: function () {
         if (Session.get("currentcoin") == "BTC") {
-            console.log('The session coin is btc');
             return true;
         } else {
             return false;
@@ -113,9 +115,7 @@ Template.buy.helpers({
     },
 
     activecoinKMD: function () {
-        console.log('The session coin is kmd', Session.get("coin"));
         if (Session.get("coin") == "KMD") {
-            console.log('The session coin is kmd');
             return true;
         } else {
             return false;
@@ -123,7 +123,6 @@ Template.buy.helpers({
     },
     activecoindICOT: function () {
         if (Session.get("coin") == tokenconfig.dICOtoken.coin) {
-            console.log('The session coin is glxt');
             return true;
         } else {
             return false;
@@ -131,7 +130,6 @@ Template.buy.helpers({
     },
     activecoinLTC: function () {
         if (Session.get("coin") == "LTC") {
-            console.log('The session coin is ltc');
             return true;
         } else {
             return false;
@@ -139,7 +137,6 @@ Template.buy.helpers({
     },
     activecoinBTC: function () {
         if (Session.get("coin") == "BTC") {
-            console.log('The session coin is btc');
             return true;
         } else {
             return false;
@@ -232,89 +229,6 @@ Template.buy.events({
             $('#amountUSD').html((Number(amount) * Number(_prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd)).toFixed(4));
         }
     },
-    "keyup #bntnbuyamountusd": function (event, template) {
-        const amountUSD = Number(template.find(".bntnbuyamountusd").value);
-
-        if (amountUSD &&
-            amountUSD < 500000 &&
-            amountUSD > 0) {
-
-            const _prices = Session.get('remotePrices');
-            if (_prices &&
-                _prices[tokenconfig.dICOtoken.coin.toLowerCase()] &&
-                _prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd) {
-                template.find(".bntnbuyamount").value = Math.floor(amountUSD / _prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd);
-                amount = Math.floor(amountUSD / _prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd);
-
-                $('#amountUSD').html((amountUSD).toFixed(4));
-                $('#amountBTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)).toFixed(8));
-                $('#amountLTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceLTC" }) && Tradedata.findOne({ key: "priceLTC" }).price / numcoin)).toFixed(8));
-                $('#amountKMD').html((Number(amount) * Number(Tradedata.findOne({ key: "priceKMD" }) && Tradedata.findOne({ key: "priceKMD" }).price / numcoin)).toFixed(8));
-            }
-        }
-    },
-    "click .bntnplus": function (event, template) {
-        if (Number(template.find(".bntnbuyamount").value) < 500000) {
-            if (Number(template.find(".bntnbuyamount").value) === 2) {
-                template.find(".bntnbuyamount").value = 500;
-                amount = 500;
-
-                Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)
-                $('#amountBTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)).toFixed(8));
-                $('#amountLTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceLTC" }) && Tradedata.findOne({ key: "priceLTC" }).price / numcoin)).toFixed(8));
-                $('#amountKMD').html((Number(amount) * Number(Tradedata.findOne({ key: "priceKMD" }) && Tradedata.findOne({ key: "priceKMD" }).price / numcoin)).toFixed(8));
-
-                const _prices = Session.get('remotePrices');
-                if (_prices &&
-                    _prices[tokenconfig.dICOtoken.coin.toLowerCase()] &&
-                    _prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd) {
-                    $('#amountUSD').html((Number(amount) * Number(_prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd)).toFixed(4));
-                }
-            } else {
-                template.find(".bntnbuyamount").value = Number(template.find(".bntnbuyamount").value) + 500;
-                amount = Number(template.find(".bntnbuyamount").value) + 500;
-                $('#amountBTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)).toFixed(8));
-                $('#amountLTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceLTC" }) && Tradedata.findOne({ key: "priceLTC" }).price / numcoin)).toFixed(8));
-                $('#amountKMD').html((Number(amount) * Number(Tradedata.findOne({ key: "priceKMD" }) && Tradedata.findOne({ key: "priceKMD" }).price / numcoin)).toFixed(8));
-
-                const _prices = Session.get('remotePrices');
-                if (_prices &&
-                    _prices[tokenconfig.dICOtoken.coin.toLowerCase()] &&
-                    _prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd) {
-                    $('#amountUSD').html((Number(amount) * Number(_prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd)).toFixed(4));
-                }
-            }
-        }
-    },
-    "click .bntnminus": function (event, template) {
-        if (Number(template.find(".bntnbuyamount").value) > 2 && Number(template.find(".bntnbuyamount").value) != 500) {
-            template.find(".bntnbuyamount").value = Number(template.find(".bntnbuyamount").value) - 500;
-            amount = Number(template.find(".bntnbuyamount").value) - 500;
-            $('#amountBTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)).toFixed(8));
-            $('#amountLTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceLTC" }) && Tradedata.findOne({ key: "priceLTC" }).price / numcoin)).toFixed(8));
-            $('#amountKMD').html((Number(amount) * Number(Tradedata.findOne({ key: "priceKMD" }) && Tradedata.findOne({ key: "priceKMD" }).price / numcoin)).toFixed(8));
-
-            const _prices = Session.get('remotePrices');
-            if (_prices &&
-                _prices[tokenconfig.dICOtoken.coin.toLowerCase()] &&
-                _prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd) {
-                $('#amountUSD').html((Number(amount) * Number(_prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd)).toFixed(4));
-            }
-        } else if (Number(template.find(".bntnbuyamount").value).toFixed(8) == 0.00000000 || Number(template.find(".bntnbuyamount").value) === 500) {
-            template.find(".bntnbuyamount").value = 2;
-            amount = 2;
-            $('#amountBTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)).toFixed(8));
-            $('#amountLTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceLTC" }) && Tradedata.findOne({ key: "priceLTC" }).price / numcoin)).toFixed(8));
-            $('#amountKMD').html((Number(amount) * Number(Tradedata.findOne({ key: "priceKMD" }) && Tradedata.findOne({ key: "priceKMD" }).price / numcoin)).toFixed(8));
-
-            const _prices = Session.get('remotePrices');
-            if (_prices &&
-                _prices[tokenconfig.dICOtoken.coin.toLowerCase()] &&
-                _prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd) {
-                $('#amountUSD').html((Number(amount) * Number(_prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd)).toFixed(4));
-            }
-        }
-    },
     "click .buybloc": function (event, template) {
         event.preventDefault();
         console.log("Num: " + template.find(".bntnbuyamount").value);
@@ -395,156 +309,87 @@ Template.buy.events({
             }
         }
 
-        if (template.find('.buywith').value === 'auto') {
-            if (Number(Userdata.findOne({
-                coin: "KMD"
-            }).balance) > ((amount / numcoin * Tradedata.findOne({
-                key: "priceKMD"
-            }).price / numcoin) + Number(0.00010000 * numcoin)) && amount > 0) {
-                //start unspent
+        const _coin = Session.get('currentcoin');
+        if (Number(Userdata.findOne({
+            coin: _coin
+        }).balance) > ((amount / numcoin * Tradedata.findOne({
+            key: "price" + _coin
+        }).price / numcoin) + Number(0.00010000 * numcoin)) && amount > 0) {
+            //start unspent
 
-                if (Meteor.isDesktop) {
-                    Session.set('buyInProgress', 'yes');
-                    Desktop.fetch('marketmaker', 'listUnspent', 60000, 'KMD')
-                        .then(result => {
-                            if (result[0]) {
-                                handleResult('KMD', result[1]);
-                            } else {
-                                console.log(result[1]);
-                                swal("Oops!", result[1], "error");
-                                Session.set('buyInProgress', 'no');
-                            }
-                        })
-                        .catch(e => {
-                            console.log(e);
-                            Session.set('buyInProgress', 'no');
-                            swal("Oops!", e.toString(), "error");
-                        });
-                } else {
-                    Meteor.call("listunspent", "KMD", function (error, result) {
-                        if (error) {
-                            // console.log(error);
-                            console.log(error.error);
-                            swal("Oops!", error.error, "error");
+            if (Meteor.isDesktop) {
+                Session.set('buyInProgress', 'yes');
+                Desktop.fetch('marketmaker', 'listUnspent', 60000, _coin)
+                    .then(result => {
+                        if (result[0]) {
+                            handleResult(_coin, result[1]);
                         } else {
-                            handleResult('KMD', result);
-                        }
-                    });
-                }
-                //end unspent
-            } else if (Number(Userdata.findOne({
-                coin: "BTC"
-            }).balance) > ((amount / numcoin * Tradedata.findOne({
-                key: "priceBTC"
-            }).price / numcoin) + Number(0.00010000 * numcoin)) && amount > 0) {
-                //start unspent
-                if (Meteor.isDesktop) {
-                    Session.set('buyInProgress', 'yes');
-                    Desktop.fetch('marketmaker', 'listUnspent', 60000, 'BTC')
-                        .then(result => {
-                            if (result[0]) {
-                                handleResult('BTC', result[1]);
-                            } else {
-                                console.log(result[1]);
-                                swal("Oops!", result[1], "error");
-                                Session.set('buyInProgress', 'no');
-                            }
-                        })
-                        .catch(e => {
-                            console.log(e);
-                            swal("Oops!", e.toString(), "error");
+                            console.log(result[1]);
+                            swal("Oops!", result[1], "error");
                             Session.set('buyInProgress', 'no');
-                        });
-                } else {
-                    Meteor.call("listunspent", "BTC", function (error, result) {
-                        if (error) {
-                            // console.log(error);
-                            console.log(error.error);
-                            swal("Oops!", error.error, "error");
-                        } else {
-                            handleResult('BTC', result);
                         }
+                    })
+                    .catch(e => {
+                        console.log(e);
+                        Session.set('buyInProgress', 'no');
+                        swal("Oops!", e.toString(), "error");
                     });
-
-                }
-            } else if (Number(Userdata.findOne({
-                    coin: "LTC"
-                }).balance) > ((amount / numcoin * Tradedata.findOne({
-                    key: "priceLTC"
-                }).price / numcoin) + Number(0.00010000 * numcoin)) && amount > 0) {
-                //start unspent
-                if (Meteor.isDesktop) {
-                    Session.set('buyInProgress', 'yes');
-                    Desktop.fetch('marketmaker', 'listUnspent', 60000, 'LTC')
-                        .then(result => {
-                            if (result[0]) {
-                                handleResult('LTC', result[1]);
-                            } else {
-                                console.log(result[1]);
-                                swal("Oops!", result[1], "error");
-                                Session.set('buyInProgress', 'no');
-                            }
-                        })
-                        .catch(e => {
-                            console.log(e);
-                            swal("Oops!", e.toString(), "error");
-                            Session.set('buyInProgress', 'no');
-                        });
-                } else {
-                    Meteor.call("listunspent", "LTC", function (error, result) {
-                        if (error) {
-                            // console.log(error);
-                            console.log(error.error);
-                            swal("Oops!", error.error, "error");
-                        } else {
-                            handleResult('LTC', result);
-                        }
-                    });
-                }
-             } else {
-                console.log("error");
-                swal("Oops!", "Not enough balance or wrong buy amount!", "error");
+            } else {
+                Meteor.call("listunspent", _coin, function (error, result) {
+                    if (error) {
+                        // console.log(error);
+                        console.log(error.error);
+                        swal("Oops!", error.error, "error");
+                    } else {
+                        handleResult(_coin, result);
+                    }
+                });
             }
-        } else {
-            const _coin = template.find('.buywith').value;
-
-            if (Number(Userdata.findOne({
-                coin: _coin
-            }).balance) > ((amount / numcoin * Tradedata.findOne({
-                key: "price" + _coin
-            }).price / numcoin) + Number(0.00010000 * numcoin)) && amount > 0) {
-                //start unspent
-
-                if (Meteor.isDesktop) {
-                    Session.set('buyInProgress', 'yes');
-                    Desktop.fetch('marketmaker', 'listUnspent', 60000, _coin)
-                        .then(result => {
-                            if (result[0]) {
-                                handleResult(_coin, result[1]);
-                            } else {
-                                console.log(result[1]);
-                                swal("Oops!", result[1], "error");
-                                Session.set('buyInProgress', 'no');
-                            }
-                        })
-                        .catch(e => {
-                            console.log(e);
-                            Session.set('buyInProgress', 'no');
-                            swal("Oops!", e.toString(), "error");
-                        });
-                } else {
-                    Meteor.call("listunspent", _coin, function (error, result) {
-                        if (error) {
-                            // console.log(error);
-                            console.log(error.error);
-                            swal("Oops!", error.error, "error");
-                        } else {
-                            handleResult(_coin, result);
-                        }
-                    });
-                }
-                //end unspent
-            }
+            //end unspent
         }
+
+    },
+    "click .select-btc": function (event, template) {
+        Session.set("currentcoin", 'BTC');
+        /*const amount = template.find(".bntnbuyamount").value;
+        $('#amountBTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)).toFixed(8));
+        */
+    },
+    "click .select-ltc": function (event, template) {
+        Session.set("currentcoin", 'LTC');
+        /*const amount = template.find(".bntnbuyamount").value;
+        $('#amountLTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceLTC" }) && Tradedata.findOne({ key: "priceLTC" }).price / numcoin)).toFixed(8));
+        */
+    },
+    "click .select-kmd": function (event, template) {
+        Session.set("currentcoin", 'KMD');
+        /*const amount = template.find(".bntnbuyamount").value;
+        $('#amountKMD').html((Number(amount) * Number(Tradedata.findOne({ key: "priceKMD" }) && Tradedata.findOne({ key: "priceKMD" }).price / numcoin)).toFixed(8));
+        */
+    },
+    "click .btn-buymax": function (event, template){
+        const coin = Session.get("currentcoin");
+        const coin_price_str = 'price' + coin;
+        var balance = Userdata.findOne({ coin: coin }) && parseFloat(Userdata.findOne({ coin: coin }).balance / numcoin).toFixed(8);
+        var price = Number(Tradedata.findOne({ key: coin_price_str }) && Tradedata.findOne({ key: coin_price_str }).price / numcoin);
+        var amount = 0;
+        if(!balance){
+            balance = 0;
+        }
+        if(!price){
+            price = 0;
+        }
+        if(balance == 0 || price == 0){
+            amount = 0;
+        }else{
+            amount = balance / price;
+        }
+        template.find("#bntnbuyamount").value = result;
+
+        //update the kmd, ltc and btc amounts
+        $('#amountBTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)).toFixed(8));
+        $('#amountLTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceLTC" }) && Tradedata.findOne({ key: "priceLTC" }).price / numcoin)).toFixed(8));
+        $('#amountKMD').html((Number(amount) * Number(Tradedata.findOne({ key: "priceKMD" }) && Tradedata.findOne({ key: "priceKMD" }).price / numcoin)).toFixed(8));
+
     }
 });

@@ -1,82 +1,89 @@
 <template name="buy">
   <div class="col-sm-9 col-lg-10">
     <div class="wallet buy">
-      <h2>Buy {{ dICOTName }} with</h2>
+      <h2>Buy {{ dICOTName }}</h2>
 
-
-      {{#unless ready}}<span><p>Syncing orderbook (may take a few minutes) {{ > sloader }}</p></span> {{/unless}}
-
-      <div class="panel-group selected-coin">
-          <div class="select-coin-btn btc {{#if activecoinBTC }}selected{{/if}}">
-              <div>Bitcoin</div>
-          </div>
-          <div class="select-coin-btn ltc {{#if activecoinLTC }}selected{{/if}}">
-              <div>Litecoin</div>
-          </div>
-          <div class="select-coin-btn kmd {{#if activecoinKMD }}selected{{/if}}">
-              <div>Komodo</div>
-          </div>
-      </div>
-
-      <div class="input-group buy">
-
-        <div class="input-group dico">
-            <span class="input-group-btn">
-                <button type="button" class="btn btn-default btn-number bntnminus" data-type="minus">
-                    <span class="glyphicon glyphicon-minus"></span>
-                </button>
-            </span>
-            <input style="border: solid 1px #ccc" type="number" id="bntnbuyamount" class="form-control buy bntnbuyamount input-number" aria-label="Amount" placeholder="Amount" value="500" step="1000" min="2" max="500000">
-            <span class="input-group-btn">
-                <button type="button" class="btn btn-default btn-number bntnplus" data-type="plus" data-field="quant[1]">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button>
-                <button class="btn btn-default buybloc" disabled={{buyDisabled}} type="button"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
-            </span>
+        <div class="container-fluid">
+            <div class="row">
+                {{#unless ready}}<span><p>Syncing orderbook (may take a few minutes) {{ > sloader }}</p></span> {{/unless}}
+            </div>
+            <div style="padding-bottom: 8px" class="row">Price per {{dICOTName}} - 1 {{dICOTName}} equals:</div>
+            <div style="padding-bottom: 5px" class="row">{{pricebtc}} <strong>BTC</strong></div>
+            <div style="padding-bottom: 5px" class="row">{{priceltc}} <strong>LTC</strong></div>
+            <div style="padding-bottom: 5px" class="row">{{pricekmd}} <strong>KMD</strong></div>
+            {{#if usdPrice}}
+                <div style="padding-bottom: 15px" class="row">{{usdPrice}} <strong>USD</strong></div>
+            {{/if}}
         </div>
-      </div>
+        <br/>
+        <span>
+            <p>Select your wallet and enter the number of GLXTs you wish to purchase. The software will display the total amount necessary.</p>
+        </span>
+
+        <div class="panel-group selected-coin">
+            <div class="select-coin-btn select-btc {{#if selectedCoinBTC }}selected{{/if}}">
+              <div><img src="/img/bitcoin.png" class="coin-logo center-block" alt="bitcoin"></div>
+              <div class="coin-name">Bitcoin</div>
+              <div class="coin-balance">{{balanceBTC}}</div>
+          </div>
+          <div class="select-coin-btn select-ltc {{#if selectedCoinLTC }}selected{{/if}}">
+              <div><img src="/img/litecoin.png" class="coin-logo center-block" alt="bitcoin"></div>
+              <div class="coin-name">Litecoin</div>
+              <div class="coin-balance">{{balanceLTC}}</div>
+          </div>
+          <div class="select-coin-btn select-kmd {{#if selectedCoinKMD }}selected{{/if}}">
+              <div><img src="/img/komodo.png" class="coin-logo center-block" alt="bitcoin"></div>
+              <div class="coin-name">Komodo</div>
+              <div class="coin-balance">{{balanceKMD}}</div>
+          </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row row-dico">
+                <div class="input-group dico">
+                    <input style="border: solid 1px #ccc;" type="number" id="bntnbuyamount" class="form-control buy bntnbuyamount input-number" aria-label="0.00000000 {{dICOTName}}" placeholder="0.00000000 {{dICOTName}}" value="1000000" step="1000" min="1">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-number btn-buymax" data-type="plus" data-field="quant[1]">
+                            BUY MAX
+                        </button>
+                    </span>
+                </div>
+                <div class="equal">=</div>
+                <div class="token-total">
+                    {{#if selectedCoinBTC }}<span id="amountBTC">{{amountBTC}}</span> <strong>BTC</strong>{{/if}}
+                    {{#if selectedCoinLTC }}<span id="amountLTC">{{amountLTC}}</span> <strong>LTC</strong>{{/if}}
+                    {{#if selectedCoinKMD }}<span id="amountKMD">{{amountKMD}}</span> <strong>KMD</strong>{{/if}}
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid buy-btn center">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default buybloc" disabled={{buyDisabled}} type="button">BUY GLXT</button>
+                </div>
+            </div>
+        </div>
+
+
 
       {{#if usdPrice}}
-        <div class="amountusd-container">
+        <div class="amountusd-container hidden">
           Amount in USD
           <input style="border: solid 1px #ccc" type="number" id="bntnbuyamountusd" class="form-control bntnbuyamountusd input-number" aria-label="Amount USD" placeholder="Amount USD" value="0" step="1" min="1" max="500000">
         </div>
       {{/if}}
 
-      <div class="buywith-container">
+      <div class="buywith-container hidden">
         Buy with
         <select class="buywith">
-          <option value="auto" selected>Auto</option>
           <option value="BTC">BTC</option>
           <option value="LTC">LTC</option>
           <option value="KMD">KMD</option>
         </select>
       </div>
 
-      <div class="prices-block">
-        <div class="left">
-          <div style="padding-bottom: 8px">Price per {{dICOTName}}:</div>
-          <div style="padding-bottom: 5px">{{pricebtc}} <strong>BTC</strong></div>
-          <div style="padding-bottom: 5px">{{priceltc}} <strong>LTC</strong></div>
-          <div style="padding-bottom: 5px">{{pricekmd}} <strong>KMD</strong></div>
-          {{#if usdPrice}}
-            <div style="padding-bottom: 15px">{{usdPrice}} <strong>USD</strong></div>
-          {{/if}}
-        </div>
-        <div class="right">
-          <div class="buywith-container">
-            Total:
-            <div style="padding-top: 8px">
-              <div style="padding-bottom: 5px"><span id="amountBTC">{{amountBTC}}</span> <strong>BTC</strong></div>
-              <div style="padding-bottom: 5px"><span id="amountLTC">{{amountLTC}}</span> <strong>LTC</strong></div>
-              <div style="padding-bottom: 5px"><span id="amountKMD">{{amountKMD}}</span> <strong>KMD</strong></div>
-              {{#if usdPrice}}
-                <div style="padding-bottom: 5px"><span id="amountUSD">{{amountUSD}}</span> <strong>USD</strong></div>
-              {{/if}}
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   <br>
   <div class="wallet buy">

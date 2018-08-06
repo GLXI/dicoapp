@@ -199,8 +199,35 @@ button.btn.btn-default.buy {
     border-radius: 0;
 }
 
-.input-group.dico {
-  width:50%;
+.row-dico {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+
+  .col-md-12{
+    display: flex;
+  }
+
+  .token-total{
+    width: 45%;
+    padding: 10px;
+    height: 50px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 5px;
+    color: rgb(85, 85, 85);
+    font-family: "Roboto", sans-serif;
+    font-size: 22px;
+  }
+
+  .dico{
+    width: 45%;
+  }
+
+  .equal{
+    width: 10%;
+    text-align: center;
+    padding-top: 15px;
+  }
 }
 
 .btn{
@@ -362,6 +389,11 @@ input::-webkit-inner-spin-button {
 
 .prices-block {
   width: 600px;
+
+  .center{
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 .prices-block > div {
   display: inline-block;
@@ -382,9 +414,24 @@ input::-webkit-inner-spin-button {
 
 .selected-coin{
   display: flex;
+  text-align: center;
+  margin-top: 40px;
+
+  .coin-logo{
+    width: 50px;
+    height: 50px;
+  }
+
+  .coin-name{
+    margin-top: 10px;
+    text-align: center;
+  }
 
   .select-coin-btn{
-    padding: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
     margin-left: 10px;
     margin-right: 10px;
     border: 1px solid lightgray;
@@ -393,13 +440,69 @@ input::-webkit-inner-spin-button {
     border-radius: 5px;
 
     &:hover{
-      background: lightgreen;
+      background: #50B379;
+      color: white;
+      font-weight: bold;
     }
 
     &.selected{
-      border: 1px solid lightgreen;
+      border: 1px solid #50B379;
+      font-weight: bold;
     }
-  }
 
+    &:first-child{
+      margin-left: auto;
+    }
+    &:last-child{
+      margin-right: auto;
+    }
+
+  }
 }
+
+.prices-container{
+  text-align: center;
+}
+
+.buy-btn{
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+
+  button{
+    padding: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
+    background-color: #50B379;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid white;
+    font-weight: bold;
+  }
+  &:first-child{
+    margin-left: auto;
+  }
+  &:last-child{
+    margin-right: auto;
+  }
+}
+
+.btn-buymax{
+  padding: 10px;
+  border-left: 0px;
+  color: #50B379;
+  height: 50px;
+}
+
+.bntnbuyamount{
+  height: 50px;
+}
+
+.equal-div{
+  text-align: center;
+  padding-top: 15px;
+  width: 40px;
+  color: lightgray;
+}
+
 
