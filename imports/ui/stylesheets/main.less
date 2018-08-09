@@ -439,14 +439,9 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
     border-radius: 5px;
 
-    &:hover{
+    &:hover, &.selected{
       background: #50B379;
       color: white;
-      font-weight: bold;
-    }
-
-    &.selected{
-      border: 1px solid #50B379;
       font-weight: bold;
     }
 
@@ -460,8 +455,17 @@ input::-webkit-inner-spin-button {
   }
 }
 
+.italic{
+  font-style: italic;
+}
+
 .prices-container{
   text-align: center;
+  .price-notes{
+    .price{
+      margin-left: 40px;
+    }
+  }
 }
 
 .buy-btn{

@@ -82,6 +82,18 @@ Template.wallet.helpers({
   balanceLTC: function(){
     return Userdata.findOne({coin:"LTC"}) && Number(parseFloat(Userdata.findOne({coin:"LTC"}).balance/numcoin));
   },
+  hasKMD: function(){
+    return Userdata.findOne({coin:"KMD"}) && Number(parseFloat(Userdata.findOne({coin:"KMD"}).balance/numcoin)) > 0;
+  },
+  hasBTC: function(){
+    return Userdata.findOne({coin:"BTC"}) && Number(parseFloat(Userdata.findOne({coin:"BTC"}).balance/numcoin)) > 0;
+  },
+  hasLTC: function(){
+    return Userdata.findOne({coin:"LTC"}) && Number(parseFloat(Userdata.findOne({coin:"LTC"}).balance/numcoin)) > 0;
+  },
+  hasICOT: function(){
+    return Userdata.findOne({coin:tokenconfig.dICOtoken.shortcode}) && Number(parseFloat(Userdata.findOne({coin:tokenconfig.dICOtoken.shortcode}).balance/numcoin)) > 0;
+  },
   dICOTName: function(){
     return tokenconfig.dICOtoken.shortcode;
   },

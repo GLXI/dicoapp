@@ -3,7 +3,31 @@
     <div class="wallet overview">
       <h2>Wallet Overview</h2>
       <p>Balances</p>
-      <p>{{balanceBTC}} BTC | {{balanceLTC}} LTC | {{balanceKMD}} KMD | {{balancedICOT}} {{dICOTName}}</p>
+      <p>
+          {{#if hasBTC}}
+              <strong>{{balanceBTC}} BTC </strong>
+          {{else}}
+            {{balanceBTC}} BTC
+          {{/if}}
+          |
+          {{#if hasLTC}}
+            <strong>{{balanceLTC}} LTC</strong>
+          {{else}}
+              {{balanceLTC}} LTC
+          {{/if}}
+          |
+          {{#if hasKMD}}
+              <strong>{{balanceKMD}} KMD</strong>
+          {{else}}
+              {{balanceKMD}} KMD
+          {{/if}}
+          |
+          {{#if hasICOT}}
+              <strong>{{balancedICOT}} {{dICOTName}}</strong>
+          {{else}}
+              {{balancedICOT}} {{dICOTName}}
+          {{/if}}
+      </p>
     </div>
     <div class="wallet send">
       <h3>Send</h3>
@@ -29,7 +53,7 @@
     </div>
     </div>
     <div class="wallet transactions">
-      <h3>Last transactions</h3>
+      <h3>Transactions</h3>
       {{#if transactionsLength}}
         <table class="table table-bordered swaps">
           <thead>

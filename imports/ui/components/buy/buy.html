@@ -3,16 +3,16 @@
     <div class="wallet buy">
       <h2>Buy {{ dICOTName }}</h2>
 
-        <div class="container-fluid">
+        <div class="container-fluid price-notes">
             <div class="row">
-                {{#unless ready}}<span><p>Syncing orderbook (may take a few minutes) {{ > sloader }}</p></span> {{/unless}}
+                {{#unless ready}}<span><p>Syncing orderbook ( <span class="italic">may take a few minutes</span> ) {{ > sloader }}</p></span> {{/unless}}
             </div>
             <div style="padding-bottom: 8px" class="row">Price per {{dICOTName}} - 1 {{dICOTName}} equals:</div>
-            <div style="padding-bottom: 5px" class="row">{{pricebtc}} <strong>BTC</strong></div>
-            <div style="padding-bottom: 5px" class="row">{{priceltc}} <strong>LTC</strong></div>
-            <div style="padding-bottom: 5px" class="row">{{pricekmd}} <strong>KMD</strong></div>
+            <div style="padding-bottom: 5px" class="row price">{{pricebtc}} <strong>BTC</strong></div>
+            <div style="padding-bottom: 5px" class="row price">{{priceltc}} <strong>LTC</strong></div>
+            <div style="padding-bottom: 5px" class="row price">{{pricekmd}} <strong>KMD</strong></div>
             {{#if usdPrice}}
-                <div style="padding-bottom: 15px" class="row">{{usdPrice}} <strong>USD</strong></div>
+                <div style="padding-bottom: 15px" class="row price">{{usdPrice}} <strong>USD</strong></div>
             {{/if}}
         </div>
         <br/>
@@ -50,9 +50,9 @@
                 </div>
                 <div class="equal">=</div>
                 <div class="token-total">
-                    {{#if selectedCoinBTC }}<span id="amountBTC">{{amountBTC}}</span> <strong>BTC</strong>{{/if}}
-                    {{#if selectedCoinLTC }}<span id="amountLTC">{{amountLTC}}</span> <strong>LTC</strong>{{/if}}
-                    {{#if selectedCoinKMD }}<span id="amountKMD">{{amountKMD}}</span> <strong>KMD</strong>{{/if}}
+                    {{#if selectedCoinBTC }}<span>{{amountBTC}}</span> <strong>BTC</strong>{{/if}}
+                    {{#if selectedCoinLTC }}<span>{{amountLTC}}</span> <strong>LTC</strong>{{/if}}
+                    {{#if selectedCoinKMD }}<span>{{amountKMD}}</span> <strong>KMD</strong>{{/if}}
                 </div>
             </div>
         </div>
