@@ -47,7 +47,7 @@ Template.buy.onCreated(function () {
         init();
     }
 
-    Session.set("currentcoin", "KMD");
+    Session.set("currentcoin", "BTC");
     Session.set("selected_amount", 1000000);
 });
 
@@ -212,16 +212,10 @@ Template.buy.events({
     "keyup #bntnbuyamount": function (event, template) {
         const amount = template.find(".bntnbuyamount").value;
         Session.set("selected_amount", Number(template.find(".bntnbuyamount").value));
-        //Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)
-        //$('#amountBTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)).toFixed(8));
-        //$('#amountLTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceLTC" }) && Tradedata.findOne({ key: "priceLTC" }).price / numcoin)).toFixed(8));
-        //$('#amountKMD').html((Number(amount) * Number(Tradedata.findOne({ key: "priceKMD" }) && Tradedata.findOne({ key: "priceKMD" }).price / numcoin)).toFixed(8));
-
         const _prices = Session.get('remotePrices');
         if (_prices &&
             _prices[tokenconfig.dICOtoken.coin.toLowerCase()] &&
             _prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd) {
-            //$('#amountUSD').html((Number(amount) * Number(_prices[tokenconfig.dICOtoken.coin.toLowerCase()].usd)).toFixed(4));
         }
     },
     "click .buybloc": function (event, template) {
@@ -344,18 +338,12 @@ Template.buy.events({
     },
     "click .select-btc": function (event, template) {
         Session.set("currentcoin", 'BTC');
-        //const amount = Number(template.find("#bntnbuyamount").value);
-        //$('#amountBTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)).toFixed(8));
     },
     "click .select-ltc": function (event, template) {
         Session.set("currentcoin", 'LTC');
-        //const amount = Number(template.find("#bntnbuyamount").value);
-        //$('#amountLTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceLTC" }) && Tradedata.findOne({ key: "priceLTC" }).price / numcoin)).toFixed(8));
     },
     "click .select-kmd": function (event, template) {
         Session.set("currentcoin", 'KMD');
-        //const amount = Number(template.find("#bntnbuyamount").value);
-        //$('#amountKMD').html((Number(amount) * Number(Tradedata.findOne({ key: "priceKMD" }) && Tradedata.findOne({ key: "priceKMD" }).price / numcoin)).toFixed(8));
     },
     "click .btn-buymax": function (event, template){
         const coin = Session.get("currentcoin");
@@ -377,11 +365,6 @@ Template.buy.events({
         }
         template.find("#bntnbuyamount").value = amount;
         Session.set("selected_amount", amount);
-        //console.log('calculations', amount, Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin));
-        //update the kmd, ltc and btc amounts
-        //$('#amountBTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceBTC" }) && Tradedata.findOne({ key: "priceBTC" }).price / numcoin)).toFixed(8));
-        //$('#amountLTC').html((Number(amount) * Number(Tradedata.findOne({ key: "priceLTC" }) && Tradedata.findOne({ key: "priceLTC" }).price / numcoin)).toFixed(8));
-        //$('#amountKMD').html((Number(amount) * Number(Tradedata.findOne({ key: "priceKMD" }) && Tradedata.findOne({ key: "priceKMD" }).price / numcoin)).toFixed(8));
 
     }
 });
